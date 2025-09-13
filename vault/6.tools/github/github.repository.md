@@ -2,7 +2,7 @@
 SYSPARCON:
   - "316"
 SYSTEM: "[[github.repository]]"
-SUPER: "[[06_tools]]"
+SUPER:
 TYPE: integration
 DEPENDENCY:
 CONSUMES:
