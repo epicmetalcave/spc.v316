@@ -22,8 +22,6 @@ WHERE contains(DEPENDENCY, this.file.link)
 ## #system/mentions
 ```dataview
 TABLE
-    SYSTEM as "SYSTEM",
-    STATE as "STATE",
     OPERATION as "OPERATION"
 FROM [[sync.coder]]
 SORT file.name ASC
