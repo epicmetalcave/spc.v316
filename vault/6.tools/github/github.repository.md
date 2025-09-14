@@ -7,7 +7,7 @@ SUPER:
   - "[[06_tools]]"
 TYPE: integration
 DEPENDENCY:
-CONSUMES:
+CONSUME:
 SEED:
 OBJECTIVE: Provide GitHub repository integration for file synchronization and version control
 SPEC-DOC: The github.repository system enables connection to the GitHub repository epicmetalcave/spc.v316 for checking file existence, tracking changes, and synchronizing vault content with version control. Serves as the source of truth for file state in sync operations.

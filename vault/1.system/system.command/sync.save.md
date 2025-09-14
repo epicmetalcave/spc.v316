@@ -1,12 +1,12 @@
 ---
 SPC:
-  - [[spc.v316]]
+  - "[[spc.v316]]"
 SYSTEM: "[[sync.save]]"
 SUPER:
 TYPE: command
 DEPENDENCY:
-CONSUMES:
-  - - github.repository
+CONSUME:
+  - "[[github.repository]]"
 SEED:
 OBJECTIVE: Generate code block with git save command for manual terminal execution
 SPEC-DOC: The sync.save command generates a code block containing the git commands to save all work. User copies and executes manually in terminal.

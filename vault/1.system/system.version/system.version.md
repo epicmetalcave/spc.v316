@@ -8,8 +8,8 @@ SUPER:
 TYPE: process
 DEPENDENCY:
   - "[[system.creation]]"
-CONSUMES:
-  - "[[claude.context]]"
+CONSUME:
+  - "[[chat.context]]"
 SEED:
 OBJECTIVE: Transform systems from current version to new version with complete documentation
 FUNCTION: Extract, modify, document, and update system versions

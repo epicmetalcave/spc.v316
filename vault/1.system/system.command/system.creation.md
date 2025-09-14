@@ -6,7 +6,7 @@ SYSTEM:
 SUPER:
 TYPE: template
 DEPENDENCY:
-CONSUMES:
+CONSUME:
   - "[[chat.code-block]]"
 SEED:
 OBJECTIVE: Define the universal template for system creation in the SPC framework
