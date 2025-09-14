@@ -1,8 +1,10 @@
 ---
-SYSPARCON:
-  - "316"
-SYSTEM: "[[github.repository]]"
+SPC:
+  - "[[spc.v316]]"
+SYSTEM:
+  - "[[github.repository]]"
 SUPER:
+  - "[[06_tools]]"
 TYPE: integration
 DEPENDENCY:
 CONSUMES:

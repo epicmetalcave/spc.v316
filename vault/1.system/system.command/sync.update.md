@@ -1,11 +1,15 @@
 ---
-SYSPARCON:
-  - "316"
-SYSTEM: "[[sync.update]]"
-SUPER: "[[00_spc]]"
+SPC:
+  - "[[spc.v316]]"
+SYSTEM:
+  - "[[sync.update]]"
+SUPER:
+  - "[[00_spc]]"
 TYPE: command
 DEPENDENCY:
-CONSUMES: "[[github.repository]]" 
+CONSUMES:
+  - "[[github.repository]]"
+  - "[[claude.context]]"
 SEED:
 OBJECTIVE: Search conversation for modified LIVE systems and generate Claude Coder UPDATE instructions
 SPEC-DOC: The sync.update command searches the current conversation for all systems marked as LIVE, checks GitHub repository for existing files that have been modified, and generates a formatted artifact with Claude Coder instructions to update only CHANGED files that exist in the repository.

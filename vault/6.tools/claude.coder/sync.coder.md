@@ -1,7 +1,10 @@
 ---
-SYSPARCON:
-SYSTEM: "[[sync.coder]]"
+SPC:
+  - "[[spc.v316]]"
+SYSTEM:
+  - "[[sync.coder]]"
 SUPER:
+  - "[[00_spc]]"
 TYPE: command
 DEPENDENCY:
 SEED:

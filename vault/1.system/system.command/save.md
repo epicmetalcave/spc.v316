@@ -1,11 +1,14 @@
 ---
-SYSPARCON:
-  - "316"
-SYSTEM: "[[save]]"
-SUPER: "[[00_spc]]"
+SPC:
+  - "[[spc.v316]]"
+SYSTEM:
+  - "[[save]]"
+SUPER:
+  - "[[00_spc]]"
 TYPE: command
 DEPENDENCY:
-CONSUMES: [[github.repository]]
+CONSUMES:
+  - "[[github.repository]]"
 SEED:
 OBJECTIVE: Execute git add, commit, and push in a single command to save all work
 SPEC-DOC: The save command executes git add -A, commit with "Save" message, and push to origin main.

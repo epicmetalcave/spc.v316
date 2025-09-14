@@ -1,8 +1,10 @@
 ---
-SYSPARCON:
-  - "316"
-SYSTEM: "[[system.properties]]"
-SUPER: "[[system.template]]"
+SPC:
+  - "[[spc.v316]]"
+SYSTEM:
+  - "[[system.properties]]"
+SUPER:
+  - "[[system.template]]"
 TYPE: schema
 DEPENDENCY:
 SEED:
