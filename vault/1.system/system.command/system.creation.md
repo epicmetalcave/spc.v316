@@ -12,9 +12,9 @@ SEED:
 OBJECTIVE: Define the universal template for system creation in the SPC framework
 FUNCTION: Render complete system documentation within single markdown code block
 OPERATION: Encapsulate entire system with escaped nested code blocks for clean copying
-SPEC-INDEX: [Structure, Properties, Format, Sections, Usage, Command, Escaping]
+SPEC-INDEX: [Structure, Properties, Format, Sections, Usage, Command, Escaping, Field-Rules]
 PRIORITY:
-VERSION: 2
+VERSION: 3
 STATE: LIVE
 ---
 # #SYSTEM/LOG
@@ -35,11 +35,11 @@ SORT file.name ASC
 ## #SYSTEM/REVIEW
 - [ ] #REVIEW [[system.creation]]  [repeat:: every 22 days when done]  [due:: 2025-09-14]
 # #system/version
-## #system/version/2 [[250914]]
+## #system/version/3 [[250914]]
 OBJECTIVE: Define the universal template for system creation in the SPC framework
 FUNCTION: Render complete system documentation within single markdown code block
 OPERATION: Encapsulate entire system with escaped nested code blocks for clean copying
-SPEC-INDEX: [Structure, Properties, Format, Sections, Usage, Command, Escaping]
+SPEC-INDEX: [Structure, Properties, Format, Sections, Usage, Command, Escaping, Field-Rules]
 
 ### SPEC-DOC
 
@@ -58,7 +58,7 @@ YAML frontmatter trinity:
 - **SPEC-INDEX**: List of documented sections in body
 Additional metadata:
 - SPC, SYSTEM, TYPE, DEPENDENCY, CONSUME, SEED, PRIORITY, VERSION, STATE
-- SUPER: Only added when explicitly specified
+- SUPER: Only added when explicitly specified (see Field-Rules)
 
 #### Format
 Code block requirements:
@@ -109,3 +109,22 @@ Example of proper escaping:
         function example() {
             return "indented with 4 spaces";
         }
+
+#### Field-Rules
+Metadata field behavior standards:
+
+**SUPER field:**
+- **Default**: Leave empty - do NOT auto-fill
+- **Only add when**: System has explicit hierarchical parent
+- **Never assume**: Relationships must be explicitly designed
+- **Examples**:
+  - ✅ CORRECT: sync.update has `SUPER: [[00_spc]]` (explicitly designed)
+  - ✅ CORRECT: Leave empty for most systems (no clear parent)
+  - ❌ WRONG: Auto-filling based on folder location
+  - ❌ WRONG: Assuming parent from similar names
+
+**Other fields:**
+- **STATE**: Start new systems as DRAFT unless explicitly specified
+- **VERSION**: Start at 1 for new systems
+- **PRIORITY**: Leave empty unless critical system
+- **SEED**: Document origin/inspiration if known
