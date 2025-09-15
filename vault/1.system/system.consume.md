@@ -18,19 +18,19 @@ STATE: LIVE
 ---
 # #SYSTEM/LOG
 ## #system/dependency
-```dataview
+~~~dataview
 LIST
 FROM [[system.consume]]
 WHERE contains(DEPENDENCY, this.file.link)
   AND file.path != this.file.path
-```
+~~~
 ## #system/mentions
-```dataview
+~~~dataview
 TABLE
     OPERATION as "OPERATION"
 FROM [[system.consume]]
 SORT file.name ASC
-```
+~~~
 ## #SYSTEM/REVIEW
 - [ ] #REVIEW [[system.consume]]  [repeat:: every 22 days when done]  [due:: 2025-09-13]
 # #system/version

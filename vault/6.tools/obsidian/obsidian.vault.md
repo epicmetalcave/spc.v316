@@ -18,19 +18,19 @@ STATE: LIVE
 ---
 # #SYSTEM/LOG
 ## #system/dependency
-```dataview
+~~~dataview
 LIST
 FROM [[obsidian.vault]]
 WHERE contains(DEPENDENCY, this.file.link)
   AND file.path != this.file.path
-```
+~~~
 ## #system/mentions
-```dataview
+~~~dataview
 TABLE
     OPERATION as "OPERATION"
 FROM [[obsidian.vault]]
 SORT file.name ASC
-```
+~~~
 ## #SYSTEM/REVIEW
 - [ ] #REVIEW [[obsidian.vault]]  [repeat:: every 22 days when done]  [due:: 2025-09-13]
 # #system/version

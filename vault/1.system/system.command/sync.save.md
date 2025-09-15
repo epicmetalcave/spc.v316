@@ -16,19 +16,19 @@ STATE: LIVE
 ---
 # #SYSTEM/LOG
 ## #system/dependency
-```dataview
+~~~dataview
 LIST
 FROM [[sync.save]]
 WHERE contains(DEPENDENCY, this.file.link)
   AND file.path != this.file.path
-```
+~~~
 ## #system/mentions
-```dataview
+~~~dataview
 TABLE
     OPERATION as "OPERATION"
 FROM [[sync.save]]
 SORT file.name ASC
-```
+~~~
 ## #SYSTEM/REVIEW
 - [ ] #REVIEW [[sync.save]]  [repeat:: every 22 days when done]  [due:: 2025-09-13]
 # #system/version

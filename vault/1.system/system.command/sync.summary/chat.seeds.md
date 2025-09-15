@@ -19,19 +19,19 @@ STATE: LIVE
 ---
 # #SYSTEM/LOG
 ## #system/dependency
-```dataview
+~~~dataview
 LIST
 FROM [[chat.seeds]]
 WHERE contains(DEPENDENCY, this.file.link)
   AND file.path != this.file.path
-```
+~~~
 ## #system/mentions
-```dataview
+~~~dataview
 TABLE
     OPERATION as "OPERATION"
 FROM [[chat.seeds]]
 SORT file.name ASC
-```
+~~~
 ## #SYSTEM/REVIEW
 - [ ] #REVIEW [[chat.seeds]]  [repeat:: every 22 days when done]  [due:: 2025-09-13]
 # #system/version

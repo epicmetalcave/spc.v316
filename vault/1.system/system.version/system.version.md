@@ -14,34 +14,34 @@ SEED:
 OBJECTIVE: Transform systems from current version to new version with complete documentation
 FUNCTION: Extract, modify, document, and update system versions
 OPERATION: Pull system state, apply changes, store history, push current version
-SPEC-INDEX: [Extract, Transform, Document, Store, Update, Structure]
+SPEC-INDEX: [Extract, Transform, Document, Store, Update, Structure, Naming]
 PRIORITY:
-VERSION: 1
+VERSION: 2
 STATE: LIVE
 ---
 # #SYSTEM/LOG
 ## #system/dependency
-```dataview
+~~~dataview
 LIST
 FROM [[system.version]]
 WHERE contains(DEPENDENCY, this.file.link)
   AND file.path != this.file.path
-```
+~~~
 ## #system/mentions
-```dataview
+~~~dataview
 TABLE
     OPERATION as "OPERATION"
 FROM [[system.version]]
 SORT file.name ASC
-```
+~~~
 ## #SYSTEM/REVIEW
-- [ ] #REVIEW [[system.version]]  [repeat:: every 22 days when done]  [due:: 2025-09-13]
+- [ ] #REVIEW [[system.version]]  [repeat:: every 22 days when done]  [due:: 2025-09-14]
 # #system/version
-## #system/version/1 [[250913]]
+## #system/version/2 [[250914]]
 OBJECTIVE: Transform systems from current version to new version with complete documentation
 FUNCTION: Extract, modify, document, and update system versions
 OPERATION: Pull system state, apply changes, store history, push current version
-SPEC-INDEX: [Extract, Transform, Document, Store, Update, Structure]
+SPEC-INDEX: [Extract, Transform, Document, Store, Update, Structure, Naming]
 
 ### SPEC-DOC
 
@@ -68,20 +68,19 @@ Create changelog entry:
 - Reference related systems affected
 
 #### Store
-Save to `/1.system/system.version/system.version.[system.name].v[number].md`:
-```markdown
-## #system/version/[new] [[date]]
-[Complete new version]
+Save to `/1.system/system.version/system.version__[system.name]__v[number].md`:
 
-## #CHANGELOG/[old]-to-[new]
-**Date:** [[date]]
-**Changes:**
-- [Property]: [what changed]
-**Reason:** [why changed]
+    ## #system/version/[new] [[date]]
+    [Complete new version]
 
-## #system/version/[old] [[date]]
-[Complete old version]
-```
+    ## #CHANGELOG/[old]-to-[new]
+    **Date:** [[date]]
+    **Changes:**
+    - [Property]: [what changed]
+    **Reason:** [why changed]
+
+    ## #system/version/[old] [[date]]
+    [Complete old version]
 
 #### Update
 Push to main system file:
@@ -90,7 +89,15 @@ Push to main system file:
 
 #### Structure
 File organization:
-- Version files: `/1.system/system.version/system.version.[system.name].v[number].md`
+- Version files: `/1.system/system.version/system.version__[system.name]__v[number].md`
 - Process runs independently of system type
 - Interface standardized via template
 - Each version creates new file with incremented version number
+
+#### Naming
+Version file naming convention:
+- **Pattern:** `system.version__[system.name]__v[number].md`
+- **Double underscore (`__`)**: Major boundary separator
+- **Example:** `system.version__system.creation__v2.md`
+- **Purpose:** Clear visual separation between process, subject, and version
+- Single underscore reserved for other uses (sub-instances, dates, etc.)
