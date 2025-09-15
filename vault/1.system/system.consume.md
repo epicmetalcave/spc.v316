@@ -5,13 +5,17 @@ SYSTEM:
   - "[[system.consume]]"
 SUPER:
 TYPE: pattern
-DEPENDENCY:
 CONSUME:
 SEED:
 OBJECTIVE: Define the CONSUME pattern for unidirectional data dependencies between systems
 FUNCTION: Document how systems declare and use data from provider systems
 OPERATION: Establish one-way consumption relationships without reverse dependencies
-SPEC-INDEX: [Pattern, Structure, Rules, Implementation, Purpose]
+SPEC-INDEX:
+  - Pattern
+  - Structure
+  - Rules
+  - Implementation
+  - Purpose
 PRIORITY:
 VERSION: 1
 STATE: LIVE

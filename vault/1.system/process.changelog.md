@@ -5,15 +5,19 @@ SYSTEM:
   - "[[process.changelog]]"
 SUPER:
 TYPE: process
-DEPENDENCY:
-  - "[[system.version]]"
 CONSUME:
   - "[[chat.context]]"
 SEED:
 OBJECTIVE: Document and track all changes between system versions with rationale and impact
 FUNCTION: Create standardized changelog entries for system modifications
 OPERATION: Extract changes, document rationale, assess impact, format entry, append to version history
-SPEC-INDEX: [Purpose, Structure, Format, Process, Standards, Examples]
+SPEC-INDEX:
+  - Purpose
+  - Structure
+  - Format
+  - Process
+  - Standards
+  - Examples
 PRIORITY:
 VERSION: 1
 STATE: DRAFT

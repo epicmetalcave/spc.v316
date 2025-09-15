@@ -5,13 +5,17 @@ SYSTEM:
   - "[[chat.context]]"
 SUPER:
 TYPE: interface
-DEPENDENCY:
 CONSUME:
 SEED:
 OBJECTIVE: Provide platform-agnostic interface for accessing conversation context
 FUNCTION: Enable systems to access conversation history and content regardless of chat provider
 OPERATION: Abstract conversation data access from specific AI implementation
-SPEC-INDEX: [Purpose, Interface, Implementations, Contract, Usage]
+SPEC-INDEX:
+  - Purpose
+  - Interface
+  - Implementations
+  - Contract
+  - Usage
 PRIORITY:
 VERSION: 1
 STATE: LIVE

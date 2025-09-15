@@ -6,7 +6,6 @@ SYSTEM:
 SUPER:
   - "[[06_tools]]"
 TYPE: integration
-DEPENDENCY:
 CONSUME:
 SEED:
 OBJECTIVE: Provide GitHub repository integration for file synchronization and version control

@@ -6,7 +6,7 @@ SYSTEM:
 SUPER:
   - "[[system.template]]"
 TYPE: schema
-DEPENDENCY:
+CONSUME:
 SEED:
 OBJECTIVE: Define YAML front matter properties for all systems in the SPC framework
 SPEC-DOC:
