@@ -128,3 +128,18 @@ Metadata field behavior standards:
 - **VERSION**: Start at 1 for new systems
 - **PRIORITY**: Leave empty unless critical system
 - **SEED**: Document origin/inspiration if known
+
+
+// First, let's define what a system looks like
+const systemTemplate = {
+  yaml: {
+    SPC: ["[[spc.v316]]"],
+    SYSTEM: "",  // We'll fill this
+    SUPER: "",   // Empty by default
+    TYPE: "",    // We'll fill this
+    STATE: "DRAFT"
+  },
+  body: {
+    sections: ["LOG", "REVIEW", "VERSION"]
+  }
+}
