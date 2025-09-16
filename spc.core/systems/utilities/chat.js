@@ -1,5 +1,5 @@
 // chat.js
-const spc = require('./spc.v316');
+const spc = require('../../spc.v316');
 
 const chat = {
     id: null,

@@ -1,5 +1,5 @@
 // tokens.js
-const spc = require('./spc.v316');
+const spc = require('../../spc.v316');
 
 const tokens = {
     execute: function(text) {
