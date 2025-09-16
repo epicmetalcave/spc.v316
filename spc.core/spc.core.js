@@ -22,5 +22,5 @@ CRITERIA:
 EXAMPLES:
 - Registration system (spc.v316)
 - Command routing (command.js)
-- Data access patterns (data.js)
+- Memory access patterns (memory.js)
 */
