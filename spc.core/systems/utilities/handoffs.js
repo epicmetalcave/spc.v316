@@ -3,7 +3,13 @@ const spc = require('../../spc.v316');
 
 const handoffs = {
     execute: function() {
+        const date = new Date();
+        const year = String(date.getFullYear()).slice(-2);
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        
         return {
+            name: `handoff_${year}${month}${day}`,
             created: this.getCreated(),
             updates: this.getUpdates(),
             changes: this.getChanges(),
@@ -62,6 +68,7 @@ HANDOFFS SYSTEM
 Extracts conversation essence for transfer.
 
 GENERATES:
+- Name: handoff_YYMMDD format
 - Created: New systems built this session
 - Updates: Formal Claude Coder modifications
 - Changes: Minor adjustments in conversation
