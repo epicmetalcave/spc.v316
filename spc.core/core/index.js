@@ -1,5 +1,5 @@
 // spc.core.js
-const spc = require('./spc.v316');
+const spc = require('../spc.v316');
 
 const core = {
     execute: () => 'Core systems container'

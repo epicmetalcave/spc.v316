@@ -1,5 +1,5 @@
 // commands/update.js
-const command = require('../command');
+const command = require('..');
 
 const updateCommand = {
     execute: function(systemName, changes) {

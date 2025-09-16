@@ -1,6 +1,6 @@
 // commands/draft.js
-const command = require('../command');
-const drafts = require('../systems/utilities/drafts');
+const command = require('..');
+const drafts = require('../../systems/utilities/drafts');
 
 const draftCommand = {
     execute: function(seedName) {

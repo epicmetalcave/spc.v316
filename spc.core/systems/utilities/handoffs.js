@@ -7,16 +7,25 @@ const handoffs = {
         const year = String(date.getFullYear()).slice(-2);
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
-        
-        return {
-            name: `handoff_${year}${month}${day}`,
-            created: this.getCreated(),
-            updates: this.getUpdates(),
-            changes: this.getChanges(),
-            archived: this.getArchived(),
-            decisions: this.getDecisions(),
-            seeds: this.getSeeds()
-        };
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        const handoffName = `handoff_${year}${month}${day}_${hours}${minutes}`;
+
+        // Format as complete document with comment header
+        const document = `// ${handoffName}
+{
+    name: "${handoffName}",
+    timestamp: "${date.toISOString()}",
+    created: ${JSON.stringify(this.getCreated(), null, 8)},
+    updates: ${JSON.stringify(this.getUpdates(), null, 8)},
+    changes: ${JSON.stringify(this.getChanges(), null, 8)},
+    archived: ${JSON.stringify(this.getArchived(), null, 8)},
+    decisions: ${JSON.stringify(this.getDecisions(), null, 8)},
+    seeds: ${JSON.stringify(this.getSeeds(), null, 8)}
+}`;
+
+        return document;
     },
     
     getCreated: function() {
@@ -68,7 +77,8 @@ HANDOFFS SYSTEM
 Extracts conversation essence for transfer.
 
 GENERATES:
-- Name: handoff_YYMMDD format
+- Name: handoff_YYMMDD_HHMM format
+- Timestamp: ISO format creation time
 - Created: New systems built this session
 - Updates: Formal Claude Coder modifications
 - Changes: Minor adjustments in conversation

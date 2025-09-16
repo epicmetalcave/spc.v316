@@ -1,6 +1,6 @@
 // commands/token.js
-const command = require('../command');
-const tokens = require('../systems/utilities/tokens');
+const command = require('..');
+const tokens = require('../../systems/utilities/tokens');
 
 const tokenCommand = {
     execute: function(conversation) {

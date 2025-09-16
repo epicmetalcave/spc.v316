@@ -1,5 +1,5 @@
 // commands/seed.js
-const command = require('../command');
+const command = require('..');
 
 const seedCommand = {
     execute: function() {

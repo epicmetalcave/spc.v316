@@ -1,6 +1,6 @@
 // commands/handoff.js
-const command = require('../command');
-const handoffs = require('../systems/utilities/handoffs');
+const command = require('..');
+const handoffs = require('../../systems/utilities/handoffs');
 
 const handoffCommand = {
     execute: function() {

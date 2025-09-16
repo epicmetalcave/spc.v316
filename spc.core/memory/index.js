@@ -1,5 +1,5 @@
 // memory.js
-const spc = require('./spc.v316');
+const spc = require('../spc.v316');
 
 const memory = {
     store: {},
