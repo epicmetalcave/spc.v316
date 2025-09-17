@@ -1,20 +1,53 @@
 // commands/seed.js
 const command = require('..');
+const memory = require('../../memory');
+const handoffs = require('../../systems/utilities/handoffs');
 
 const seedCommand = {
     execute: function() {
-        return [
-            'timer plugin - Intervals/blocks/folders for shell',
-            'workout plugin - Uses timers, tracks exercises', 
-            'plugin bridges - Cross-plugin consumption pattern',
-            'shell infrastructure - Public framework core',
-            'file.js - File storage system',
-            'MCP bridge - Connect Claude to vault',
-            'changelog.js - Track system changes',
-            'decisions.js - Document choices made',
-            'context.js - Current state snapshot',
-            'handoff.js - Aggregator for all above'
-        ];
+        // Try to get from memory first, fall back to handoffs
+        let seeds = [];
+        let drafts = [];
+
+        // Check if we have handoff data in memory
+        const handoffData = memory.get('handoff');
+        if (handoffData && typeof handoffData === 'object') {
+            seeds = handoffData.seeds || [];
+            drafts = handoffData.drafts || [];
+        } else {
+            // Fall back to getting directly from handoffs
+            seeds = handoffs.getSeeds();
+            drafts = handoffs.getDrafts();
+        }
+
+        // Format the output
+        let output = 'SEEDS:\n';
+        if (seeds.length > 0) {
+            seeds.forEach((seed, i) => {
+                if (typeof seed === 'string') {
+                    output += `  ${i + 1}. ${seed}\n`;
+                } else {
+                    output += `  ${i + 1}. ${seed.name} - ${seed.context || ''}\n`;
+                }
+            });
+        } else {
+            output += '  (none)\n';
+        }
+
+        output += '\nDRAFTS:\n';
+        if (drafts.length > 0) {
+            drafts.forEach((draft, i) => {
+                if (typeof draft === 'string') {
+                    output += `  ${i + 1}. ${draft}\n`;
+                } else {
+                    output += `  ${i + 1}. ${draft.name} - ${draft.context || ''} ${draft.status ? `[${draft.status}]` : ''}\n`;
+                }
+            });
+        } else {
+            output += '  (none)\n';
+        }
+
+        return output;
     }
 };
 
@@ -24,8 +57,13 @@ module.exports = seedCommand;
 /*
 SEED COMMAND
 
-Returns unimplemented ideas from conversation.
+Returns seeds (unimplemented ideas) and drafts (partial implementations)
+from handoff data or memory.
 
 USAGE:
-/seed - List all unconverted ideas
+/seed - List all seeds and drafts
+
+OUTPUT:
+- SEEDS: Ideas not yet implemented
+- DRAFTS: Systems partially implemented or in draft state
 */

@@ -22,7 +22,8 @@ module.exports = {
     changes: ${JSON.stringify(this.getChanges(), null, 8)},
     archived: ${JSON.stringify(this.getArchived(), null, 8)},
     decisions: ${JSON.stringify(this.getDecisions(), null, 8)},
-    seeds: ${JSON.stringify(this.getSeeds(), null, 8)}
+    seeds: ${JSON.stringify(this.getSeeds(), null, 8)},
+    drafts: ${JSON.stringify(this.getDrafts(), null, 8)}
 }`;
 
         return document;
@@ -61,8 +62,19 @@ module.exports = {
                 context: "Nested intervals/blocks/folders, rounds multiplier, shell/plugins/"
             },
             {
-                name: "workout plugin", 
+                name: "workout plugin",
                 context: "Consumes timer plugin, tracks sets/reps/weight"
+            }
+        ];
+    },
+
+    getDrafts: function() {
+        // Systems partially implemented or in draft state
+        return [
+            {
+                name: "vectors system",
+                context: "Vector storage and manipulation utilities",
+                status: "Partial implementation in memory system"
             }
         ];
     }
@@ -85,4 +97,5 @@ GENERATES:
 - Archived: Systems retired this session
 - Decisions: Architectural choices with rationale
 - Seeds: Unimplemented ideas with context
+- Drafts: Systems partially implemented or in draft state
 */
