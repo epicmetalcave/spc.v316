@@ -1,5 +1,6 @@
-{
-    name: "handoff_250116",
+// handoff_250916
+module.exports = {
+    name: "handoff_250916",
     
     created: [
         "spc.v316.js - Core paradigm (27 lines)",
