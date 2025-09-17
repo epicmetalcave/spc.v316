@@ -99,7 +99,6 @@ const performance = {
     }
 };
 
-operations.register('performance', performance);
 export default performance;
 
 /*

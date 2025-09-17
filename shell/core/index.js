@@ -1,8 +1,20 @@
 // shell/core/index.js
-import './operations/index.js';
+import operations from './operations/index.js';
+import initOperations from './operations/init.js';
 
 const core = {
     systems: new Map(),
+    initialized: false,
+
+    init() {
+        if (this.initialized) return;
+
+        // Initialize operations subsystem
+        initOperations();
+        this.register('operations', operations);
+
+        this.initialized = true;
+    },
 
     register(name, system) {
         if (system.execute) {

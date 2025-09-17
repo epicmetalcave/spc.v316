@@ -119,7 +119,6 @@ const density = {
     }
 };
 
-operations.register('density', density);
 export default density;
 
 /*

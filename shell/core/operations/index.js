@@ -1,7 +1,5 @@
 // shell/core/operations/index.js
 import core from '../index.js';
-import './performance/index.js';
-import './density/index.js';
 
 const operations = {
     constraints: new Map(),

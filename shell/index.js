@@ -11,8 +11,9 @@ const shell = {
     async init() {
         if (this.initialized) return this.execute();
 
-        // Load core operations (performance, density)
+        // Load and initialize core operations (performance, density)
         this.core = core;
+        this.core.init();
 
         // Initialize dashboard (panels, modal, plugin-library)
         this.dashboard = Dashboard;
