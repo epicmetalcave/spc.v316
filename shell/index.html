@@ -1,96 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
+    <title>Shell</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPC Shell</title>
     <style>
-        * {
-            margin: 0;
+        body { 
+            margin: 0; 
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Courier New', monospace;
-            background: #000;
-            color: #0f0;
-            overflow: hidden;
-        }
-
-        #dashboard {
-            width: 100vw;
+            background: #000; 
+            color: #0f0; 
+            font-family: monospace; 
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 8px;
-        }
-
-        .panel {
-            flex: 1;
-            border: 1px solid #0f0;
-            padding: 8px;
-            margin: 4px;
-            cursor: pointer;
-            transition: all 0.1s;
-        }
-
-        .panel.active {
-            background: #0f0;
-            color: #000;
-        }
-
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            padding-bottom: 4px;
-            border-bottom: 1px solid currentColor;
-        }
-
-        .panel-title {
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .panel-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .panel-action {
-            background: transparent;
-            border: none;
-            color: inherit;
-            cursor: pointer;
-            font-size: 16px;
-            padding: 2px 6px;
-        }
-
-        .panel-action:hover {
-            background: currentColor;
-            color: #000;
-        }
-
-        .panel-content {
-            font-family: 'Courier New', monospace;
+            overflow: hidden;
         }
     </style>
 </head>
 <body>
     <script type="module">
-        import shell from './index.js';
-
-        // Initialize shell on window load
-        window.addEventListener('load', () => {
-            console.log('Initializing SPC Shell...');
-            const result = shell.init();
-            console.log('Shell initialized:', result);
-
-            // Expose shell for debugging
-            window.shell = shell;
-        });
+        import Dashboard from './dashboard.js';
+        Dashboard.init();
     </script>
 </body>
 </html>
