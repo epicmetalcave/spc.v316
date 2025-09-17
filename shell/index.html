@@ -1,24 +1,6 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Shell</title>
-    <meta charset="UTF-8">
-    <style>
-        body { 
-            margin: 0; 
-            padding: 0;
-            background: #000; 
-            color: #0f0; 
-            font-family: monospace; 
-            height: 100vh;
-            overflow: hidden;
-        }
-    </style>
-</head>
-<body>
-    <script type="module">
-        import Dashboard from './dashboard.js';
-        Dashboard.init();
-    </script>
-</body>
-</html>
+<meta charset="UTF-8">
+<script type="module">
+import shell from './shell/index.js';
+shell.init();
+</script>

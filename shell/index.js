@@ -1,44 +1,23 @@
 // shell/index.js
 import core from './core/index.js';
-import Dashboard from './dashboard/index.js';
+import dashboard from './dashboard/index.js';
 
 const shell = {
-    version: '1.0.0',
-    dashboard: null,
-    core: null,
-    initialized: false,
-
     async init() {
-        if (this.initialized) return this.execute();
-
-        // Load and initialize core operations (performance, density)
-        this.core = core;
-        this.core.init();
-
-        // Initialize dashboard (panels, modal, plugin-library)
-        this.dashboard = Dashboard;
-        this.dashboard.init();
-
-        this.initialized = true;
-
+        // Initialize in order
+        core.init();
+        dashboard.init();
+        
         return this.execute();
     },
 
     execute() {
+        // Return system status
         return {
-            version: this.version,
-            initialized: this.initialized,
-            core: this.core ? true : false,
-            dashboard: this.dashboard ? this.dashboard.execute() : null
+            core: core.execute(),
+            dashboard: dashboard.execute()
         };
     }
 };
 
 export default shell;
-
-/*
-SHELL SYSTEM
-
-Domain-agnostic plugin framework orchestrator.
-Phase 0: Local-only, no network, no auth.
-*/
