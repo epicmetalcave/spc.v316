@@ -14,7 +14,7 @@ const handoffs = {
 
         // Format as complete document with comment header
         const document = `// ${handoffName}
-{
+module.exports = {
     name: "${handoffName}",
     timestamp: "${date.toISOString()}",
     created: ${JSON.stringify(this.getCreated(), null, 8)},
