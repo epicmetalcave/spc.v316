@@ -1,5 +1,5 @@
 // shell/core/operations/density/index.js
-const operations = require('../index');
+import operations from '../index.js';
 
 const density = {
     scope: 'shell',
@@ -120,7 +120,7 @@ const density = {
 };
 
 operations.register('density', density);
-module.exports = density;
+export default density;
 
 /*
 DENSITY CONSTRAINT

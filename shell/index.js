@@ -1,28 +1,28 @@
 // shell/index.js
-const spc = require('../spc.core/spc.v316');
+import core from './core/index.js';
+import Dashboard from './dashboard/index.js';
 
 const shell = {
     version: '1.0.0',
     dashboard: null,
     core: null,
     initialized: false,
-    
-    init() {
+
+    async init() {
         if (this.initialized) return this.execute();
-        
+
         // Load core operations (performance, density)
-        this.core = require('./core');
-        
+        this.core = core;
+
         // Initialize dashboard (panels, modal, plugin-library)
-        const Dashboard = require('./dashboard');
-        this.dashboard = new Dashboard();
+        this.dashboard = Dashboard;
         this.dashboard.init();
-        
+
         this.initialized = true;
-        
+
         return this.execute();
     },
-    
+
     execute() {
         return {
             version: this.version,
@@ -33,9 +33,7 @@ const shell = {
     }
 };
 
-// Register with spc
-spc.register('shell', shell);
-module.exports = shell;
+export default shell;
 
 /*
 SHELL SYSTEM

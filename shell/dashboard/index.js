@@ -1,166 +1,57 @@
 // shell/dashboard/index.js
+import Panel from './panel.js';
 
 const Dashboard = {
     panels: new Map(),
-    layout: {},
+    container: null,
     activePanel: null,
     initialized: false,
-    
+
     init() {
         if (this.initialized) return;
-        
-        // Load saved layout or create default
-        const saved = this.loadLayout();
-        if (saved) {
-            this.restoreLayout(saved);
-        } else {
-            this.createDefaultLayout();
+
+        // Create or get container
+        this.container = document.getElementById('dashboard');
+        if (!this.container) {
+            this.container = document.createElement('div');
+            this.container.id = 'dashboard';
+            document.body.appendChild(this.container);
         }
-        
+
+        // Create default panel
+        const root = new Panel('root', this);
+        this.panels.set('root', root);
+        this.container.appendChild(root.render());
+
+        // Set as active
+        this.setActivePanel('root');
+
         this.initialized = true;
         return true;
     },
     
-    createDefaultLayout() {
-        const Panel = require('./panel');
-        const root = new Panel('root');
+    setActivePanel(panelId) {
+        // Deactivate all
+        this.panels.forEach(panel => panel.setActive(false));
         
-        this.panels.set('root', root);
-        this.layout = { 
-            root: { 
-                type: 'panel', 
-                id: 'root' 
-            } 
-        };
-        this.activePanel = 'root';
-        
-        this.saveLayout();
-    },
-    
-    splitPanel(panelId, direction) {
+        // Activate target
         const panel = this.panels.get(panelId);
-        if (!panel) {
-            return { error: 'Panel not found' };
+        if (panel) {
+            panel.setActive(true);
+            this.activePanel = panelId;
         }
-        
-        const Panel = require('./panel');
-        const leftId = `${panelId}-${direction === 'horizontal' ? 'top' : 'left'}`;
-        const rightId = `${panelId}-${direction === 'horizontal' ? 'bottom' : 'right'}`;
-        
-        const left = new Panel(leftId);
-        const right = new Panel(rightId);
-        
-        this.panels.set(leftId, left);
-        this.panels.set(rightId, right);
-        this.panels.delete(panelId);
-        
-        this.layout[panelId] = {
-            type: 'split',
-            direction,
-            children: [leftId, rightId]
-        };
-        this.layout[leftId] = { 
-            type: 'panel', 
-            id: leftId,
-            parent: panelId 
-        };
-        this.layout[rightId] = { 
-            type: 'panel', 
-            id: rightId,
-            parent: panelId 
-        };
-        
-        panel.destroy();
-        this.activePanel = leftId;
-        
-        this.saveLayout();
-        return { left: leftId, right: rightId };
     },
     
-    deletePanel(panelId) {
-        if (this.panels.size === 1) {
-            return false;
-        }
-        
+    removePanel(panelId) {
         const panel = this.panels.get(panelId);
         if (panel) {
             panel.destroy();
             this.panels.delete(panelId);
-        }
-        
-        delete this.layout[panelId];
-        
-        if (this.activePanel === panelId) {
-            this.activePanel = this.panels.keys().next().value;
-        }
-        
-        if (this.panels.size === 0) {
-            this.createDefaultLayout();
-        }
-        
-        this.saveLayout();
-        return true;
-    },
-    
-    setActivePanel(panelId) {
-        if (!this.panels.has(panelId)) {
-            return false;
-        }
-        
-        if (this.activePanel) {
-            const current = this.panels.get(this.activePanel);
-            if (current) current.setActive(false);
-        }
-        
-        this.activePanel = panelId;
-        const panel = this.panels.get(panelId);
-        if (panel) panel.setActive(true);
-        
-        return true;
-    },
-    
-    saveLayout() {
-        const data = {
-            panels: Array.from(this.panels.keys()),
-            layout: this.layout,
-            activePanel: this.activePanel
-        };
-        
-        try {
-            if (typeof localStorage !== 'undefined') {
-                localStorage.setItem('dashboard-layout', JSON.stringify(data));
+            
+            // If was active, activate first remaining
+            if (this.activePanel === panelId && this.panels.size > 0) {
+                this.setActivePanel(this.panels.keys().next().value);
             }
-        } catch (e) {
-            console.error('Failed to save layout:', e);
-        }
-    },
-    
-    loadLayout() {
-        try {
-            if (typeof localStorage !== 'undefined') {
-                const data = localStorage.getItem('dashboard-layout');
-                return data ? JSON.parse(data) : null;
-            }
-        } catch (e) {
-            console.error('Failed to load layout:', e);
-        }
-        return null;
-    },
-    
-    restoreLayout(saved) {
-        const Panel = require('./panel');
-        
-        saved.panels.forEach(panelId => {
-            const panel = new Panel(panelId);
-            this.panels.set(panelId, panel);
-        });
-        
-        this.layout = saved.layout || {};
-        this.activePanel = saved.activePanel || saved.panels[0];
-        
-        if (this.activePanel) {
-            const panel = this.panels.get(this.activePanel);
-            if (panel) panel.setActive(true);
         }
     },
     
@@ -173,4 +64,26 @@ const Dashboard = {
     }
 };
 
-module.exports = Dashboard;
+export default Dashboard;
+
+/*
+DASHBOARD SYSTEM
+
+Orchestrates panel management for the shell interface.
+
+Core responsibilities:
+- Initialize dashboard container in DOM
+- Manage panel registry (Map)
+- Track active panel state
+- Handle panel lifecycle (create/remove)
+
+Structure:
+- panels: Map of panelId → Panel instance
+- container: DOM element hosting all panels
+- activePanel: Currently focused panel ID
+- initialized: Prevents duplicate initialization
+
+The dashboard is a thin orchestrator. It doesn't define how panels split,
+resize, or display plugins. It only manages which panels exist and which
+one is active.
+*/

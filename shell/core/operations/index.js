@@ -1,9 +1,11 @@
 // shell/core/operations/index.js
-const core = require('../index');
+import core from '../index.js';
+import './performance/index.js';
+import './density/index.js';
 
 const operations = {
     constraints: new Map(),
-    
+
     register: function(name, constraint) {
         if (constraint.execute && constraint.validate && constraint.enforce) {
             this.constraints.set(name, constraint);
@@ -11,7 +13,7 @@ const operations = {
         }
         return false;
     },
-    
+
     enforce: function(target, name) {
         const violations = {};
         this.constraints.forEach((constraint, constraintName) => {
@@ -22,7 +24,7 @@ const operations = {
         });
         return violations;
     },
-    
+
     measure: function(target) {
         const metrics = {};
         this.constraints.forEach((constraint, name) => {
@@ -30,7 +32,7 @@ const operations = {
         });
         return metrics;
     },
-    
+
     validate: function(target) {
         const violations = [];
         this.constraints.forEach((constraint) => {
@@ -39,11 +41,11 @@ const operations = {
         });
         return violations;
     },
-    
+
     list: function() {
         return Array.from(this.constraints.keys());
     },
-    
+
     execute: function() {
         const status = {};
         this.constraints.forEach((constraint, name) => {
@@ -54,7 +56,7 @@ const operations = {
 };
 
 core.register('operations', operations);
-module.exports = operations;
+export default operations;
 
 /*
 SHELL OPERATIONS SYSTEM

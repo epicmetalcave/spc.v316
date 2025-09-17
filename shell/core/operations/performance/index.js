@@ -1,5 +1,5 @@
 // shell/core/operations/performance/index.js
-const operations = require('../index');
+import operations from '../index.js';
 
 const performance = {
     limits: {
@@ -100,7 +100,7 @@ const performance = {
 };
 
 operations.register('performance', performance);
-module.exports = performance;
+export default performance;
 
 /*
 PERFORMANCE CONSTRAINT
