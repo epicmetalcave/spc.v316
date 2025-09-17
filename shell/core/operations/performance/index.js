@@ -1,4 +1,4 @@
-// operations/performance/index.js
+// shell/core/operations/performance/index.js
 const operations = require('../index');
 
 const performance = {
@@ -8,7 +8,7 @@ const performance = {
         nodes: 50           // 50 nodes brutal simplicity
     },
     
-    measure: function(target) {
+    measure(target) {
         return {
             size: this.measureSize(target),
             latency: this.measureLatency(target),
@@ -16,7 +16,7 @@ const performance = {
         };
     },
     
-    measureSize: function(target) {
+    measureSize(target) {
         if (typeof target === 'string') {
             return Buffer.byteLength(target, 'utf8');
         }
@@ -26,7 +26,7 @@ const performance = {
         return Buffer.byteLength(JSON.stringify(target), 'utf8');
     },
     
-    measureLatency: function(target) {
+    measureLatency(target) {
         if (typeof target !== 'function') return 0;
         
         const start = Date.now();
@@ -34,13 +34,13 @@ const performance = {
         return Date.now() - start;
     },
     
-    measureNodes: function(target) {
+    measureNodes(target) {
         // Node count only measurable in browser
         // Returns 0 in Node.js environment
         return 0;
     },
     
-    grade: function(target) {
+    grade(target) {
         const metrics = this.measure(target);
         
         // Inverted scoring: smaller = better
@@ -61,7 +61,7 @@ const performance = {
         };
     },
     
-    validate: function(target) {
+    validate(target) {
         const violations = [];
         const gradeResult = this.grade(target);
         
@@ -75,7 +75,7 @@ const performance = {
         return violations;
     },
     
-    enforce: function(target) {
+    enforce(target) {
         const gradeResult = this.grade(target);
         
         return {
@@ -87,7 +87,7 @@ const performance = {
         };
     },
     
-    execute: function() {
+    execute() {
         return {
             limits: this.limits,
             grading: {
@@ -106,13 +106,5 @@ module.exports = performance;
 PERFORMANCE CONSTRAINT
 
 Radical 25KB/8ms/50-node limits with grading.
-
-GRADING:
-- 200% = Half the limit (excellent)
-- 100% = At limit (acceptable)  
-- <100% = Exceeds limit (failing)
-
-PHILOSOPHY:
-Norton Commander ran in 640KB.
-These constraints enforce that efficiency.
+Phase 0: Enforces constraints on all shell components.
 */

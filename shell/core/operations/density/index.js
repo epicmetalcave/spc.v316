@@ -17,12 +17,12 @@ const density = {
     
     exceptions: new Set(),
     
-    addException: function(systemName) {
+    addException(systemName) {
         this.exceptions.add(systemName);
         return true;
     },
     
-    enforce: function(target, name) {
+    enforce(target, name) {
         if (name && this.exceptions.has(name)) {
             return { passed: true, failed: false, details: ['Exception granted'] };
         }
@@ -55,7 +55,7 @@ const density = {
         return result;
     },
     
-    measure: function(target) {
+    measure(target) {
         const metrics = {
             elements: 0,
             information: 0,
@@ -92,7 +92,7 @@ const density = {
         return metrics;
     },
     
-    validate: function(target) {
+    validate(target) {
         if (!target.interface && !target.render && !target.display) {
             return [];  // No violations for non-UI systems
         }
@@ -111,7 +111,7 @@ const density = {
         return violations;
     },
     
-    execute: function() {
+    execute() {
         return {
             ratios: this.ratios,
             philosophy: "Strong tools need no decoration"
@@ -123,21 +123,13 @@ operations.register('density', density);
 module.exports = density;
 
 /*
-DENSITY SYSTEM
+DENSITY CONSTRAINT
 
 Enforces 90/10/0 interface ratios for shell plugins.
-
-PRINCIPLE:
-Decoration signals product weakness.
-Marketing competes on attention, not merit.
-
-SCOPE: Shell plugins only (UI systems)
+Phase 0: Applied to all UI components.
 
 RATIOS:
 - 90% information (utility)
-- 10% structure (access)
+- 10% structure (access)  
 - 0% decoration (marketing)
-
-EXCEPTIONS:
-Systems can be granted exceptions when necessary.
 */

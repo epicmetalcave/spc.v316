@@ -10,10 +10,10 @@ const shell = {
     init() {
         if (this.initialized) return this.execute();
         
-        // Initialize core operations
+        // Load core operations (performance, density)
         this.core = require('./core');
         
-        // Initialize dashboard
+        // Initialize dashboard (panels, modal, plugin-library)
         const Dashboard = require('./dashboard');
         this.dashboard = new Dashboard();
         this.dashboard.init();
@@ -40,5 +40,6 @@ module.exports = shell;
 /*
 SHELL SYSTEM
 
-Minimal orchestrator for the shell framework.
+Domain-agnostic plugin framework orchestrator.
+Phase 0: Local-only, no network, no auth.
 */
