@@ -1,5 +1,5 @@
 // shell/core/operations/index.js
-import core from '../index.js';
+
 
 const operations = {
     constraints: new Map(),
@@ -53,7 +53,7 @@ const operations = {
     }
 };
 
-core.register('operations', operations);
+
 export default operations;
 
 /*

@@ -1,5 +1,5 @@
 // shell/core/operations/performance/index.js
-import operations from '../index.js';
+
 
 const performance = {
     limits: {

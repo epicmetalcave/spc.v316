@@ -1,5 +1,5 @@
 // shell/core/operations/density/index.js
-import operations from '../index.js';
+
 
 const density = {
     scope: 'shell',
