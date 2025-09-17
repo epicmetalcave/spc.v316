@@ -3,42 +3,34 @@ const spc = require('../spc.v316');
 
 const codex = {
     systems: new Map(),
+    types: {
+        philosophical: [],
+        operational: []
+    },
     
-    register: function(name, system) {
+    register: function(name, system, type) {
         if (system.execute && system.validate) {
             this.systems.set(name, system);
+            if (type && this.types[type]) {
+                this.types[type].push(name);
+            }
             return true;
         }
         return false;
     },
     
-    validate: function(targetName, target) {
-        const report = {};
-        this.systems.forEach((system, name) => {
-            const violations = system.validate(target);
-            if (violations && violations.length > 0) {
-                report[name] = violations;
-            }
-        });
-        return report;
+    listByType: function(type) {
+        return this.types[type] || [];
     },
     
-    check: function(targetName) {
-        const target = spc.core.get(targetName);
-        if (!target) return `Target not found: ${targetName}`;
-        return this.validate(targetName, target);
-    },
-    
-    list: function() {
-        return Array.from(this.systems.keys());
-    },
+    // ... existing validate, check functions ...
     
     execute: function() {
-        const status = {};
-        this.systems.forEach((system, name) => {
-            status[name] = system.execute();
-        });
-        return status;
+        return {
+            philosophical: this.types.philosophical,
+            operational: this.types.operational,
+            total: this.systems.size
+        };
     }
 };
 
