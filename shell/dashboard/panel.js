@@ -13,8 +13,8 @@ class Panel {
         // Add resize functionality
         initResize(this.element);
         
-        // Add split/resize arrows
-        this.addArrows();
+        // Add edge indicators
+        this.addEdgeIndicators();
     }
     
     createElement() {
@@ -26,7 +26,13 @@ class Panel {
         div.style.left = '0';
         div.style.right = '0';
         div.style.bottom = '0';
-        div.style.border = '1px solid var(--ui)';
+        
+        // Shared border approach: only right and bottom borders
+        div.style.borderRight = '1px solid var(--ui)';
+        div.style.borderBottom = '1px solid var(--ui)';
+        div.style.borderTop = 'none';
+        div.style.borderLeft = 'none';
+        
         div.style.display = 'flex';
         div.style.flexDirection = 'column';
         
@@ -40,71 +46,109 @@ class Panel {
         return div;
     }
     
-    addArrows() {
-        const arrows = {
-            top: { symbol: '▼', style: { top: '4px', left: '50%', transform: 'translateX(-50%)' } },
-            bottom: { symbol: '▲', style: { bottom: '4px', left: '50%', transform: 'translateX(-50%)' } },
-            left: { symbol: '▶', style: { left: '4px', top: '50%', transform: 'translateY(-50%)' } },
-            right: { symbol: '◀', style: { right: '4px', top: '50%', transform: 'translateY(-50%)' } }
+    addEdgeIndicators() {
+        const indicators = {
+            top: { symbol: '═', style: { top: '1px', left: '50%', transform: 'translateX(-50%)' } },
+            bottom: { symbol: '═', style: { bottom: '1px', left: '50%', transform: 'translateX(-50%)' } },
+            left: { symbol: '‖', style: { left: '1px', top: '50%', transform: 'translateY(-50%)' } },
+            right: { symbol: '‖', style: { right: '1px', top: '50%', transform: 'translateY(-50%)' } }
         };
         
-        Object.entries(arrows).forEach(([edge, config]) => {
-            const arrow = document.createElement('div');
-            arrow.className = `arrow arrow-${edge}`;
-            arrow.style.position = 'absolute';
-            arrow.style.cursor = 'pointer';
-            arrow.style.zIndex = '10';
-            arrow.style.color = 'var(--ui)';
-            arrow.style.fontSize = '12px';
-            arrow.style.padding = '2px';
-            arrow.style.userSelect = 'none';
-            arrow.innerHTML = config.symbol;
+        Object.entries(indicators).forEach(([edge, config]) => {
+            const indicator = document.createElement('div');
+            indicator.className = `indicator indicator-${edge}`;
+            indicator.style.position = 'absolute';
+            indicator.style.cursor = edge === 'top' || edge === 'bottom' ? 'ns-resize' : 'ew-resize';
+            indicator.style.zIndex = '10';
+            indicator.style.color = 'var(--ui)';
+            indicator.style.fontSize = '8px';
+            indicator.style.padding = '4px';
+            indicator.style.userSelect = 'none';
+            indicator.style.opacity = '0.5';
+            indicator.innerHTML = config.symbol;
             
-            Object.assign(arrow.style, config.style);
+            Object.assign(indicator.style, config.style);
             
-            let holdTimer = null;
-            let isHolding = false;
+            let clickCount = 0;
+            let clickTimer = null;
             
-            // Click for resize (5% adjustment)
-            arrow.onclick = (e) => {
+            // Handle single and double clicks
+            indicator.onclick = (e) => {
                 e.stopPropagation();
-                if (!isHolding) {
-                    resizePanel(this.element, edge);
-                }
-                isHolding = false;
-            };
-            
-            // Long press for split
-            arrow.onmousedown = (e) => {
-                e.stopPropagation();
-                isHolding = false;
+                clickCount++;
                 
-                holdTimer = setTimeout(() => {
-                    isHolding = true;
-                    const newPanel = splitPanel(this.element, edge);
-                    // Notify dashboard about new panel
-                    const dashboard = document.getElementById('dashboard');
-                    dashboard.dispatchEvent(new CustomEvent('panel-created', { detail: newPanel }));
-                }, 500); // 500ms hold for split
-            };
-            
-            arrow.onmouseup = () => {
-                if (holdTimer) {
-                    clearTimeout(holdTimer);
-                    holdTimer = null;
+                if (clickCount === 1) {
+                    clickTimer = setTimeout(() => {
+                        // Single click - 5% resize
+                        resizePanel(this.element, edge, 0.05);
+                        clickCount = 0;
+                    }, 250);
+                } else if (clickCount === 2) {
+                    // Double click - 50% split or balance
+                    clearTimeout(clickTimer);
+                    
+                    // Check if edge is shared with another panel
+                    const isSharedBorder = checkSharedBorder(this.element, edge);
+                    
+                    if (isSharedBorder) {
+                        // Balance to 50/50
+                        balancePanels(this.element, edge);
+                    } else {
+                        // Create new panel at 50%
+                        const newPanel = splitPanel(this.element, edge, 0.5);
+                        // Notify dashboard about new panel
+                        const dashboard = document.getElementById('dashboard');
+                        dashboard.dispatchEvent(new CustomEvent('panel-created', { detail: newPanel }));
+                    }
+                    
+                    clickCount = 0;
                 }
             };
             
-            arrow.onmouseleave = () => {
-                if (holdTimer) {
-                    clearTimeout(holdTimer);
-                    holdTimer = null;
-                }
-            };
-            
-            this.element.appendChild(arrow);
+            this.element.appendChild(indicator);
         });
     }
+}
+
+// Helper function to check if border is shared
+function checkSharedBorder(panel, edge) {
+    const container = panel.parentElement;
+    const panels = Array.from(container.querySelectorAll('.panel')).filter(p => p !== panel);
+    
+    const currentLeft = panel.offsetLeft;
+    const currentTop = panel.offsetTop;
+    const currentRight = currentLeft + panel.offsetWidth;
+    const currentBottom = currentTop + panel.offsetHeight;
+    
+    for (let otherPanel of panels) {
+        const otherLeft = otherPanel.offsetLeft;
+        const otherTop = otherPanel.offsetTop;
+        const otherRight = otherLeft + otherPanel.offsetWidth;
+        const otherBottom = otherTop + otherPanel.offsetHeight;
+        
+        switch(edge) {
+            case 'left':
+                if (Math.abs(currentLeft - otherRight) <= 2) return true;
+                break;
+            case 'right':
+                if (Math.abs(currentRight - otherLeft) <= 2) return true;
+                break;
+            case 'top':
+                if (Math.abs(currentTop - otherBottom) <= 2) return true;
+                break;
+            case 'bottom':
+                if (Math.abs(currentBottom - otherTop) <= 2) return true;
+                break;
+        }
+    }
+    return false;
+}
+
+// Helper function to balance panels to 50/50
+function balancePanels(panel, edge) {
+    // This will be implemented in resize.js
+    // For now, call resizePanel with 50% target
+    resizePanel(panel, edge, 0.5, true); // true = balance mode
 }
 
 export default Panel;
