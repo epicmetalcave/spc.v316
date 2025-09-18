@@ -1,12 +1,12 @@
-// shell/dashboard/index.js
+// ===== shell/dashboard/index.js =====
 import theme from '../core-plugins/theme.js';
-import Panel from './panel.js';
+import layout from './layout.js';
+import renderer from './renderer.js';
+import events from './events.js';
 
 const dashboard = {
-    panels: new Map(),
-    
     init() {
-        // Set body styles (no color)
+        // Set body styles
         document.body.style.background = 'var(--bg)';
         document.body.style.margin = '0';
         document.body.style.fontFamily = 'monospace';
@@ -23,39 +23,25 @@ const dashboard = {
         container.style.left = '2px';
         container.style.right = '2px';
         container.style.bottom = '2px';
+        container.style.border = '1px solid var(--ui)';
+        container.style.display = 'flex';
         document.body.appendChild(container);
         
-        // Listen for new panels created by splitting
-        container.addEventListener('panel-created', (e) => {
-            this.registerPanel(e.detail);
-        });
+        // Initialize systems
+        renderer.init('dashboard');
+        events.init(layout, renderer);
         
-        // Create first panel
-        const panel = new Panel('root');
-        container.appendChild(panel.element);
-        this.registerPanel(panel);
+        // Initial render
+        renderer.render(layout.getTree());
         
         console.log('Dashboard initialized');
-    },
-    
-    registerPanel(panel) {
-        this.panels.set(panel.id, panel);
-    },
-    
-    removePanel(panelId) {
-        const panel = this.panels.get(panelId);
-        if (panel && panel.element.parentNode) {
-            panel.element.parentNode.removeChild(panel.element);
-            this.panels.delete(panelId);
-        }
     },
     
     execute() {
         return { 
             initialized: true,
-            panels: this.panels.size
+            panels: 1  // Simple default for now
         };
     }
 };
-
 export default dashboard;

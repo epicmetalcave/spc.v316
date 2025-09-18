@@ -1,82 +1,90 @@
 // systems/utilities/handoffs.js
 const spc = require('../../spc.v316');
+const memory = require('../../memory');
 
 const handoffs = {
     execute: function() {
-        const date = new Date();
-        const year = String(date.getFullYear()).slice(-2);
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `CLAUDE CODER INSTRUCTIONS
+================================
+Task: Create handoff archive file with real timestamp
 
-        const handoffName = `handoff_${year}${month}${day}_${hours}${minutes}`;
+Steps:
+1. Get current timestamp using new Date() in Copenhagen timezone
+2. Format timestamp as YYMMDD_HHMM where:
+   - YY: 2-digit year
+   - MM: 2-digit month with leading zero
+   - DD: 2-digit day with leading zero
+   - HH: 24-hour format hour
+   - MM: minutes
 
-        // Format as complete document with comment header
-        const document = `// ${handoffName}
+3. Gather handoff data by:
+   - Check memory.get('created') for new systems
+   - Check memory.get('updates') for modified files
+   - Check memory.get('decisions') for architectural choices
+   - Check memory.get('seeds') for unimplemented ideas
+   - Check memory.get('drafts') for partial implementations
+
+4. Create filename: handoff_[timestamp].js
+
+5. Write file with content:
+// handoff_[timestamp]
 module.exports = {
-    name: "${handoffName}",
-    timestamp: "${date.toISOString()}",
-    created: ${JSON.stringify(this.getCreated(), null, 8)},
-    updates: ${JSON.stringify(this.getUpdates(), null, 8)},
-    changes: ${JSON.stringify(this.getChanges(), null, 8)},
-    archived: ${JSON.stringify(this.getArchived(), null, 8)},
-    decisions: ${JSON.stringify(this.getDecisions(), null, 8)},
-    seeds: ${JSON.stringify(this.getSeeds(), null, 8)},
-    drafts: ${JSON.stringify(this.getDrafts(), null, 8)}
-}`;
+    name: "handoff_[timestamp]",
+    timestamp: new Date().toISOString(),
+    copenhagen_time: new Date().toLocaleString("en-US", {timeZone: "Europe/Copenhagen"}),
+    
+    created: [/* items from memory or empty array */],
+    updates: [/* items from memory or empty array */],
+    changes: [/* items from memory or empty array */],
+    archived: [/* items from memory or empty array */],
+    decisions: [/* items from memory or empty array */],
+    seeds: [/* items from memory or empty array */],
+    drafts: [/* items from memory or empty array */]
+}
 
-        return document;
+6. Save to EXISTING directory: archive/processlog/handoff/handoff_[timestamp].js
+7. Test file loads: node -e "require('./archive/processlog/handoff/handoff_[timestamp].js')"
+
+IMPORTANT: 
+- Use existing path: archive/processlog/handoff/
+- Pull actual data from memory or scan filesystem
+- Do NOT use placeholder data
+`;
     },
     
     getCreated: function() {
-        // New systems built in this conversation
-        return [];
+        // Pull from memory if available, otherwise empty
+        return memory.get('created') || [];
     },
     
     getUpdates: function() {
-        // Formal updates via Claude Coder
-        return [];
+        // Pull from memory if available, otherwise empty
+        return memory.get('updates') || [];
     },
     
     getChanges: function() {
-        // Minor modifications during conversation
-        return [];
+        // Pull from memory if available, otherwise empty
+        return memory.get('changes') || [];
     },
     
     getArchived: function() {
-        // Systems moved to archive
-        return [];
+        // Pull from memory if available, otherwise empty
+        return memory.get('archived') || [];
     },
     
     getDecisions: function() {
-        // Extract architectural decisions
-        return [];
+        // Pull from memory if available, otherwise empty
+        return memory.get('decisions') || [];
     },
     
     getSeeds: function() {
-        // Return seeds with implementation context
-        return [
-            {
-                name: "timer plugin",
-                context: "Nested intervals/blocks/folders, rounds multiplier, shell/plugins/"
-            },
-            {
-                name: "workout plugin",
-                context: "Consumes timer plugin, tracks sets/reps/weight"
-            }
-        ];
+        // Pull from memory if available, otherwise empty
+        return memory.get('seeds') || [];
     },
 
     getDrafts: function() {
-        // Systems partially implemented or in draft state
-        return [
-            {
-                name: "vectors system",
-                context: "Vector storage and manipulation utilities",
-                status: "Partial implementation in memory system"
-            }
-        ];
+        // Pull from memory if available, otherwise empty
+        return memory.get('drafts') || [];
     }
 };
 
@@ -86,16 +94,14 @@ module.exports = handoffs;
 /*
 HANDOFFS SYSTEM
 
-Extracts conversation essence for transfer.
+Generic handoff generator - pulls data from memory or filesystem.
+Does NOT contain hardcoded conversation data.
 
-GENERATES:
-- Name: handoff_YYMMDD_HHMM format
-- Timestamp: ISO format creation time
-- Created: New systems built this session
-- Updates: Formal Claude Coder modifications
-- Changes: Minor adjustments in conversation
-- Archived: Systems retired this session
-- Decisions: Architectural choices with rationale
-- Seeds: Unimplemented ideas with context
-- Drafts: Systems partially implemented or in draft state
+PATH: archive/processlog/handoff/
+FORMAT: handoff_YYMMDD_HHMM.js
+
+Data sources:
+- memory system for conversation state
+- filesystem scanning for actual files
+- NOT hardcoded in this file
 */

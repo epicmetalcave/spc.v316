@@ -71,38 +71,76 @@ class Panel {
             
             let clickCount = 0;
             let clickTimer = null;
+            let holdTimer = null;
+            let isHolding = false;
             
-            // Handle single and double clicks
-            indicator.onclick = (e) => {
+            // Handle clicks and holds
+            indicator.onmousedown = (e) => {
                 e.stopPropagation();
+                isHolding = false;
+                
+                // Start hold timer for panel creation (500ms)
+                holdTimer = setTimeout(() => {
+                    isHolding = true;
+                    
+                    // Check if edge has adjacent panel
+                    const hasAdjacent = checkSharedBorder(this.element, edge);
+                    
+                    if (!hasAdjacent) {
+                        // Create new panel at 50%
+                        const newPanel = splitPanel(this.element, edge, 0.5);
+                        const dashboard = document.getElementById('dashboard');
+                        dashboard.dispatchEvent(new CustomEvent('panel-created', { detail: newPanel }));
+                    }
+                }, 500);
+            };
+            
+            indicator.onmouseup = (e) => {
+                e.stopPropagation();
+                
+                // Clear hold timer
+                if (holdTimer) {
+                    clearTimeout(holdTimer);
+                    holdTimer = null;
+                }
+                
+                // If was holding, don't process as click
+                if (isHolding) {
+                    isHolding = false;
+                    return;
+                }
+                
+                // Process clicks
                 clickCount++;
                 
                 if (clickCount === 1) {
                     clickTimer = setTimeout(() => {
-                        // Single click - 5% resize
-                        resizePanel(this.element, edge, 0.05);
+                        // Single click - 5% resize only if adjacent panel exists
+                        const hasAdjacent = checkSharedBorder(this.element, edge);
+                        if (hasAdjacent) {
+                            resizePanel(this.element, edge, 0.05);
+                        }
                         clickCount = 0;
                     }, 250);
                 } else if (clickCount === 2) {
-                    // Double click - 50% split or balance
+                    // Double click - balance to 50/50 only on shared borders
                     clearTimeout(clickTimer);
                     
-                    // Check if edge is shared with another panel
-                    const isSharedBorder = checkSharedBorder(this.element, edge);
-                    
-                    if (isSharedBorder) {
-                        // Balance to 50/50
-                        balancePanels(this.element, edge);
-                    } else {
-                        // Create new panel at 50%
-                        const newPanel = splitPanel(this.element, edge, 0.5);
-                        // Notify dashboard about new panel
-                        const dashboard = document.getElementById('dashboard');
-                        dashboard.dispatchEvent(new CustomEvent('panel-created', { detail: newPanel }));
+                    const hasAdjacent = checkSharedBorder(this.element, edge);
+                    if (hasAdjacent) {
+                        resizePanel(this.element, edge, 0.5, true);
                     }
                     
                     clickCount = 0;
                 }
+            };
+            
+            indicator.onmouseleave = () => {
+                if (holdTimer) {
+                    clearTimeout(holdTimer);
+                    holdTimer = null;
+                }
+                isHolding = false;
             };
             
             this.element.appendChild(indicator);
@@ -142,13 +180,6 @@ function checkSharedBorder(panel, edge) {
         }
     }
     return false;
-}
-
-// Helper function to balance panels to 50/50
-function balancePanels(panel, edge) {
-    // This will be implemented in resize.js
-    // For now, call resizePanel with 50% target
-    resizePanel(panel, edge, 0.5, true); // true = balance mode
 }
 
 export default Panel;
